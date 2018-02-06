@@ -13,11 +13,7 @@ namespace Task1
             try
             {
                 Console.WriteLine("Input students count");
-                int n = 0;
-                do
-                {
-                    n = Convert.ToInt32(Console.ReadLine());
-                } while (!CheckOnNegativity(n));
+                int n = CheckOnNegativity();
                 Student[] students = new Student[n];
                 for (int i = 0; i < n; i++)
                 {
@@ -40,11 +36,7 @@ namespace Task1
                         case 1:
                             {
                                 Console.WriteLine("Input student's number");
-                                int stdntNmbr = 0;
-                                do
-                                {
-                                    stdntNmbr = Convert.ToInt32(Console.ReadLine());
-                                } while (!CheckStudent(students, stdntNmbr));
+                                int stdntNmbr = CheckStudent(students);
                                 double average = students[stdntNmbr - 1].GetAvgMark();
                                 Console.WriteLine("Average mark: " + average);
                                 Console.WriteLine("Press any button to contunue");
@@ -54,11 +46,7 @@ namespace Task1
                         case 2:
                             {
                                 Console.WriteLine("Input student's number");
-                                int stdntNmbr = 0;
-                                do
-                                {
-                                    stdntNmbr = Convert.ToInt32(Console.ReadLine());
-                                } while (!CheckStudent(students, stdntNmbr));
+                                int stdntNmbr = CheckStudent(students);
                                 Console.WriteLine("First name: " + students[stdntNmbr - 1].FirstName);
                                 Console.WriteLine("Course: " + students[stdntNmbr - 1].Course);
                                 Console.WriteLine("Group number: " + students[stdntNmbr - 1].GroupNumber);
@@ -69,11 +57,7 @@ namespace Task1
                         case 3:
                             {
                                 Console.WriteLine("Input student's number");
-                                int stdntNmbr = 0;
-                                do
-                                {
-                                    stdntNmbr = Convert.ToInt32(Console.ReadLine());
-                                } while (!CheckStudent(students, stdntNmbr));
+                                int stdntNmbr = CheckStudent(students);
                                 students[stdntNmbr - 1].ResetAllMarks();
                                 Console.WriteLine("All marks were deleted");
                                 Console.WriteLine("Press any button to contunue");
@@ -106,26 +90,11 @@ namespace Task1
             Console.WriteLine("Input student's first name");
             string fam = Convert.ToString(Console.ReadLine());
             Console.WriteLine("Input student's course");
-            int course = 0;
-            do
-            {
-                course = Convert.ToInt32(Console.ReadLine());
-                CheckCourse(course);
-            } while (!CheckCourse(course));
+            int course = CheckCourse();
             Console.WriteLine("Input student's number of group");
-            int group = 0;
-            do
-            {
-                group = Convert.ToInt32(Console.ReadLine());
-                CheckOnNegativity(group);
-            } while (!CheckOnNegativity(group));
+            int group = CheckOnNegativity();
             Console.WriteLine("Input marks count:");
-            int n = 0;
-            do
-            {
-                n = Convert.ToInt32(Console.ReadLine());
-                CheckOnNegativity(n);
-            } while (!CheckOnNegativity(n));
+            int n = CheckOnNegativity();
             Mark[] marks = new Mark[n];
             for (int i = 0; i < n; i++)
             {
@@ -139,45 +108,65 @@ namespace Task1
             Console.WriteLine("Input subject name");
             string name = Convert.ToString(Console.ReadLine());
             Console.WriteLine("Input subject mark");
-            int mark = 0;
-            do
-            {
-                mark = Convert.ToInt32(Console.ReadLine());
-                CheckOnNegativity(mark);
-            } while (!CheckOnNegativity(mark));
+            int mark = CheckOnNegativity();
             return (new Mark(name, mark));
         }
 
-        static bool CheckCourse(int course)
+        static int CheckCourse()
         {
-            if (course < 1 || course > 5)
+            int course = 0;
+            do
             {
-                Console.WriteLine("Course vaule must be from 1 to 5. Re-check your input data.");
-                return false;
-            }
-            else
-                return true;
+                var input = Console.ReadLine();
+                if (int.TryParse(input, out course))
+                {
+                    if (course < 1 || course > 5)
+                        Console.WriteLine("Course vaule must be from 1 to 5. Re-check your input data");
+                }
+                else
+                    Console.WriteLine("Course must be int32. Please try again.");
+            } while (course < 1 || course > 5);
+            return course;
         }
 
-        static bool CheckOnNegativity(int number)
+        static int CheckOnNegativity()
         {
-            if (number <= 0)
+            int i = 0;
+            do
             {
-                Console.WriteLine("Value must be more than 0");
-                return false;
-            }
-            return true;
+                var input = Console.ReadLine();
+                try
+                {
+                    int.TryParse(input, out i);
+                    if (i <= 0)
+                    {
+                        Console.WriteLine("Value must be more than 0");
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Value must be Int32");
+                }
+            } while (i <= 0);
+            return i;
         }
 
-        static bool CheckStudent(Student[] students, int number)
+        static int CheckStudent(Student[] students)
         {
-            if (number < 1 || number > students.Length)
+            int number = 0;
+            do
             {
-                Console.WriteLine("The entered number doesn't fit. " +
-                    "Enter the number from 1 to " + students.Length);
-                return false;
-            }
-            return true;
+                var input = Console.ReadLine();
+                if (int.TryParse(input, out number))
+                {
+                    if (number < 1 || number > students.Length)
+                        Console.WriteLine("The entered number doesn't fit. " +
+                            "Enter the number from 1 to " + students.Length);
+                }
+                else
+                    Console.WriteLine("Number must be int32. Please try again.");
+            } while (number < 1 || number > students.Length);
+            return number;
         }
     }
 }
