@@ -50,6 +50,14 @@ namespace Task1
                                 Console.WriteLine("First name: " + students[stdntNmbr - 1].FirstName);
                                 Console.WriteLine("Course: " + students[stdntNmbr - 1].Course);
                                 Console.WriteLine("Group number: " + students[stdntNmbr - 1].GroupNumber);
+                                Console.WriteLine("Age: " + students[stdntNmbr - 1].Age);
+                                Console.WriteLine("Entrance year: " + students[stdntNmbr - 1].EntUniver);
+                                Console.WriteLine("Studied disciplines: ");
+                                students[stdntNmbr - 1].CheckMarks(students[stdntNmbr - 1].Marks);
+                                int? scholarship;
+                                students[stdntNmbr - 1].CheckScholarship(out scholarship);
+                                if (scholarship != null)
+                                    Console.WriteLine("Size of scholarship: " + scholarship + " BYN");
                                 Console.WriteLine("Press any button to contunue");
                                 Console.ReadKey();
                                 break;
@@ -93,6 +101,10 @@ namespace Task1
             int course = CheckCourse();
             Console.WriteLine("Input student's number of group");
             int group = CheckOnNegativity();
+            Console.WriteLine("Input student's age");
+            int age = CheckAge();
+            Console.WriteLine("Input student's enterance year");
+            int entYear = CheckEntYear();
             Console.WriteLine("Input marks count:");
             int n = CheckOnNegativity();
             Mark[] marks = new Mark[n];
@@ -100,7 +112,7 @@ namespace Task1
             {
                 marks[i] = InputMark();
             }
-            return (new Student(fam, course, group, marks));
+            return (new Student(fam, course, group, marks, age, entYear));
         }
 
         static Mark InputMark()
@@ -167,6 +179,40 @@ namespace Task1
                     Console.WriteLine("Number must be int32. Please try again.");
             } while (number < 1 || number > students.Length);
             return number;
+        }
+
+        static int CheckAge()
+        {
+            int age = 0;
+            do
+            {
+                var input = Console.ReadLine();
+                if (int.TryParse(input, out age))
+                {
+                    if (age < 16 || age > 40)
+                        Console.WriteLine("Age of the student must be between 16 and 40");
+                }
+                else
+                    Console.WriteLine("Age must be int32");
+            } while (age < 16 || age > 50);
+            return age;
+        }
+
+        static int CheckEntYear()
+        {
+            int year = 0;
+            do
+            {
+                var input = Console.ReadLine();
+                if (int.TryParse(input, out year))
+                {
+                    if (year < 2013 || year > 2017)
+                        Console.WriteLine("Year must be between 2013 and 2017");
+                }
+                else
+                    Console.WriteLine("Year must be int32");
+            } while (year < 2013 || year > 2017);
+            return year;
         }
     }
 }
